@@ -1,0 +1,6 @@
+<% flash.each do |name, msg| %>
+  <%= content_tag :div, msg, :id => "flash_#{name}" %>
+<% end %>
+<h1>Home#index</h1>
+<%= link_to "Sign in with Twitter", "/auth/twitter" %>
+<p>Find me in app/views/home/index.html.erb</p>
