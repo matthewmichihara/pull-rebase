@@ -1,10 +1,10 @@
 Merge::Application.routes.draw do
-  get "sessions/create"
 
-  get "home/index"
-
+  resources :authentications
+  devise_for :users
   root :to => "home#index"
-  match "/auth/:provider/callback" => "sessions#create"
+  match "/auth/:provider/callback" => "authentications#create"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
