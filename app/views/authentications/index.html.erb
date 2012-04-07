@@ -8,7 +8,8 @@
     <% for authentication in @authentications %>
       <div class="authentication">
         <div class="provider"><%= authentication.provider.titleize %></div>
-        <div class="uid"><%= authentication.uid %></div>
+        <div class="uid"><%= authentication.access_token %></div>
+        <div class="uid"><%= authentication.access_secret %></div>
       </div>
     <% end %>
     <div class="clear"></div>
