@@ -1,9 +1,30 @@
+:javascript
+  var max_id = 0;
+  $(document).ready(function() {
+    $("#refresh_button").click(function() {
+      $.getJSON('/proxies/twitter_user_timeline.json', function(data) {
+        var items = [];
+
+        if (data.length > 0) {
+          max_id = data[0]['id_str'];
+        }
+
+        $.each(data, function(key, value) {
+          var tweet = '<li class="tweet"><img src="' + value['user']['profile_image_url'] + '" /><div id="tweet_text">' + value['text'] + '</div><div class="twitter_screen_name">' + value['user']['screen_name'] + '</div>';
+          items.push(tweet);
+        });
+
+        $('<ul />', {
+          html: items.join('')
+        }).appendTo('body');
+
+        $('<p />', { html: max_id}).appendTo('body');
+      });
+    });
+  });
+
 %h1 simplemerge
+%button{:id => "refresh_button"} refresh
 
 = link_to 'Sign in with Twitter', '/auth/twitter'
 = link_to 'Sign in with Facebook', '/auth/facebook'
-
-- if @twitter
-  %ul
-  - @twitter.home_timeline.each do |tweet|
-    %li= tweet.text

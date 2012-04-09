@@ -1,5 +1,7 @@
 Merge::Application.routes.draw do
 
+  get "proxies/twitter_user_timeline"
+
   resources :authentications
   devise_for :users
   root :to => "home#index"

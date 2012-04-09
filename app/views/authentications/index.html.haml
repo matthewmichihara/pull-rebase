@@ -1,0 +1,7 @@
+%h1 Authentications
+
+%h2 Currently linked accounts:
+%ul
+  - if @authentications
+    - @authentications.each do |auth|
+      %li= auth.provider.titleize
