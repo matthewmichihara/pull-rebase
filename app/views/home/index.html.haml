@@ -1,0 +1,9 @@
+%h1 simplemerge
+
+= link_to 'Sign in with Twitter', '/auth/twitter'
+= link_to 'Sign in with Facebook', '/auth/facebook'
+
+- if @twitter
+  %ul
+  - @twitter.home_timeline.each do |tweet|
+    %li= tweet.text
