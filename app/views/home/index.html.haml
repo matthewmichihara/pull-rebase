@@ -1,8 +1,9 @@
 :javascript
-  var max_id = 0;
+  var max_id = 1;
+
   $(document).ready(function() {
     $("#refresh_button").click(function() {
-      $.getJSON('/proxies/twitter_user_timeline.json', function(data) {
+      $.getJSON('/proxies/twitter_user_timeline.json?since_id=' + max_id, function(data) {
         var items = [];
 
         if (data.length > 0) {
@@ -17,8 +18,6 @@
         $('<ul />', {
           html: items.join('')
         }).appendTo('body');
-
-        $('<p />', { html: max_id}).appendTo('body');
       });
     });
   });

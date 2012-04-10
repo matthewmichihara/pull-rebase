@@ -19,7 +19,7 @@ class ProxiesController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => @twitter.home_timeline.to_json }
+      format.json { render :json => @twitter.home_timeline(params).to_json }
     end
   end
 end
