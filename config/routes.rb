@@ -1,6 +1,7 @@
 Merge::Application.routes.draw do
 
   get "proxies/twitter_user_timeline"
+  get "proxies/facebook_feed"
 
   resources :authentications
   devise_for :users

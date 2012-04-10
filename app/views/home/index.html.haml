@@ -1,23 +1,67 @@
 :javascript
   var max_id = 1;
+  var items = [];
+  var finishedCount = 0;
+  
+  // Reverse sort (newest on top)
+  function compare(a, b) {
+    if (a['timestamp'] < b['timestamp'])
+      return 1
+    if (a['timestamp'] > b['timestamp'])
+      return -1;
+    return 0;
+  }
+
+  function refresh_if_all_loaded() {
+    finishedCount++;
+    if (finishedCount >= 2) {
+      finishedCount = 0;
+      items.sort(compare);
+      $('<ul />', {
+        html: items.map(function(item) { return item.content; }).join('')
+      }).appendTo('body');
+    }
+  }
 
   $(document).ready(function() {
     $("#refresh_button").click(function() {
       $.getJSON('/proxies/twitter_user_timeline.json?since_id=' + max_id, function(data) {
-        var items = [];
-
         if (data.length > 0) {
           max_id = data[0]['id_str'];
         }
 
         $.each(data, function(key, value) {
-          var tweet = '<li class="tweet"><img src="' + value['user']['profile_image_url'] + '" /><div id="tweet_text">' + value['text'] + '</div><div class="twitter_screen_name">' + value['user']['screen_name'] + '</div>';
-          items.push(tweet);
+          var item = {};
+          item['timestamp'] = Date.parse(value['created_at']);
+          item['content'] = '<li class="tweet"><img src="'
+            + value['user']['profile_image_url']
+            + '" /><div id="tweet_text">'
+            + value['text']
+            + '</div><div class="twitter_screen_name">'
+            + value['user']['screen_name']
+            + '</div>';
+          items.push(item);
         });
 
-        $('<ul />', {
-          html: items.join('')
-        }).appendTo('body');
+        refresh_if_all_loaded();
+      });
+  
+      $.getJSON('/proxies/facebook_feed.json', function(data) {
+        $.each(data, function(key, value) {
+          if (value['type'] == 'status') {
+            var item = {};
+            item['timestamp'] = Date.parse(value['created_time']);
+            item['content'] = '<li class="fb"><img src="http://graph.facebook.com/' + value['from']['id'] + '/picture" />'
+              + '<div id="fb_text">'
+              + value['message']
+              + '</div><div class="fb_name">'
+              + value['from']['name']
+              + '</div></li>';
+            items.push(item);
+          }
+        });
+
+        refresh_if_all_loaded();
       });
     });
   });

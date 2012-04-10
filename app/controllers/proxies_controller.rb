@@ -10,6 +10,10 @@ class ProxiesController < ApplicationController
     Twitter::Client.new
   end
 
+  def facebook_graph(access_token)
+    Koala::Facebook::API.new(access_token)
+  end
+
   def twitter_user_timeline
     @twitter = nil
     current_user.authentications.each do |auth|
@@ -20,6 +24,19 @@ class ProxiesController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => @twitter.home_timeline(params).to_json }
+    end
+  end
+
+  def facebook_feed
+    feed = nil
+    current_user.authentications.each do |auth|
+      if auth.provider == 'facebook'
+        feed = facebook_graph(auth.access_token)
+      end
+    end
+
+    respond_to do |format|
+      format.json { render :json => feed.get_connections("me", "home").to_json }
     end
   end
 end
