@@ -8,8 +8,15 @@
 
   %body
     %nav
-      = link_to 'Sign in with Twitter', '/auth/twitter'
-      = link_to 'Sign in with Facebook', '/auth/facebook'
+      - if twitter.nil?
+        = link_to 'Sign in with Twitter', '/auth/twitter'
+      - else
+        = link_to 'Sign out from Twitter', '/#'
+      
+      - if facebook.nil?
+        = link_to 'Sign in with Facebook', '/auth/facebook'
+      - else
+        = link_to 'Sign out from Facebook', '/#'
     
     %p{:class => "notice"}= notice
     %p{:class => "alert"}= alert
