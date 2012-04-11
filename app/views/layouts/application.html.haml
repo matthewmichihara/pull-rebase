@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+%html
+  %head
+    %title Merge
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+
+  %body
+    %nav
+      = link_to 'Sign in with Twitter', '/auth/twitter'
+      = link_to 'Sign in with Facebook', '/auth/facebook'
+    
+    %p{:class => "notice"}= notice
+    %p{:class => "alert"}= alert
+
+    = yield
