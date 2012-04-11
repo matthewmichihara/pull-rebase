@@ -1,16 +1,17 @@
 :javascript
-  var max_id = 1;
-  var finishedCount = 0;
+  var twitter_max_id = 1;
+  var facebook_since = 0;
   
   // Reverse sort (newest on top)
   function compare(a, b) {
     if (a['timestamp'] < b['timestamp'])
-      return 1
+      return -1
     if (a['timestamp'] > b['timestamp'])
-      return -1;
+      return 1;
     return 0;
   }
-
+  
+  // Callback that is run when all feeds have loaded.
   function feedsLoaded(twitterArgs, facebookArgs) {
     var twitter = twitterArgs[0];
     var facebook = facebookArgs[0];
@@ -18,7 +19,7 @@
     var items = [];
 
     if (twitter.length > 0) {
-      max_id = twitter[0]['id_str'];
+      twitter_max_id = twitter[0]['id_str'];
     }
 
     $.each(twitter, function(key, value) {
@@ -48,23 +49,38 @@
       }
     });
     
+    // Sort all feed items by timestamp. Eventually merge sort the lists to be more efficient.
     items.sort(compare);
-    $('<ul />', {
-      html: items.map(function(item) { return item.content; }).join('')
-    }).appendTo('body');
+
+    // Prepend any new items to the front of the list.
+    $.each(items, function(index, item) {
+      $('#feed').prepend(item.content);
+    });
+  }
+
+  // Asynchronously get json feeds.
+  function refreshFeed() {
+    $.when(
+      $.getJSON('/api/twitter_user_timeline.json?since_id=' + twitter_max_id, function(data) {
+        return data;
+      }),
+      $.getJSON('/api/facebook_feed.json?since=' + facebook_since, function(data) {
+        return data;
+      }
+    )).done(feedsLoaded);
   }
 
   $(document).ready(function() {
-    $("#refresh_button").click(function() {
-      $.when(
-        $.getJSON('/api/twitter_user_timeline.json?since_id=' + max_id, function(data) {
-          return data;
-        }),
-        $.getJSON('/api/facebook_feed.json', function(data) {
-          return data;
-        })).done(feedsLoaded);
-    });
+    // Refresh feed when document is loaded.
+    refreshFeed();
+
+    $("#refresh_button").click(refreshFeed);
+
+    // The 'r' key refreshes the feed.
+    $(document).bind('keydown', 'r', refreshFeed);
   });
 
 %h1 simplemerge
 %button{:id => "refresh_button"} refresh
+
+%ul{:id => "feed"}

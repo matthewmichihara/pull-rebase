@@ -25,6 +25,7 @@ end
 
 gem 'haml'
 gem 'jquery-rails'
+gem 'jquery-hotkeys-rails'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'

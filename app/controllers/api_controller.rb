@@ -19,7 +19,7 @@ class ApiController < ApplicationController
       end
     else
       respond_to do |format|
-        format.json { render :json => facebook.get_connections("me", "home", :since => 1334128363).to_json }
+        format.json { render :json => facebook.get_connections("me", "home", params).to_json }
       end
     end
   end
