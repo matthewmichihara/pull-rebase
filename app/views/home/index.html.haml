@@ -22,6 +22,11 @@
       twitter_max_id = twitter[0]['id_str'];
     }
 
+    if (facebook.length > 0) {
+      // Fb api takes unix style timestamps.
+      facebook_since = Date.parse(facebook[0]['created_time'])/1000;
+    }
+
     $.each(twitter, function(key, value) {
       var item = {};
       item['timestamp'] = Date.parse(value['created_at']);

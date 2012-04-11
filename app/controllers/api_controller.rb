@@ -3,7 +3,7 @@ class ApiController < ApplicationController
   def twitter_user_timeline
     if twitter.nil?
       respond_to do |format|
-        format.json { render :json => "[]".to_json }
+        format.json { render :json => [].to_json }
       end
     else
       respond_to do |format|
@@ -15,7 +15,7 @@ class ApiController < ApplicationController
   def facebook_feed
     if facebook.nil?    
       respond_to do |format|
-        format.json { render :json => "[]".to_json }
+        format.json { render :json => [].to_json }
       end
     else
       respond_to do |format|
