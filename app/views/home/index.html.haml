@@ -57,10 +57,10 @@
   $(document).ready(function() {
     $("#refresh_button").click(function() {
       $.when(
-        $.getJSON('/proxies/twitter_user_timeline.json?since_id=' + max_id, function(data) {
+        $.getJSON('/api/twitter_user_timeline.json?since_id=' + max_id, function(data) {
           return data;
         }),
-        $.getJSON('/proxies/facebook_feed.json', function(data) {
+        $.getJSON('/api/facebook_feed.json', function(data) {
           return data;
         })).done(feedsLoaded);
     });
