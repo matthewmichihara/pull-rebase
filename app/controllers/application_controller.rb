@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
+  before_filter :authenticate_user!
+  before_filter :init_clients
   protect_from_forgery
-
-  @@twitter = nil
-  @@facebook = nil
 
   def init_twitter(access_token, access_secret)
     Twitter.configure do |config|
@@ -12,22 +11,28 @@ class ApplicationController < ActionController::Base
       config.oauth_token_secret = access_secret
     end
 
-    @@twitter ||= Twitter::Client.new
+    Twitter::Client.new
   end
 
   def init_facebook(access_token)
-    @@facebook ||= Koala::Facebook::API.new(access_token)
+    Koala::Facebook::API.new(access_token)
   end
 
-  helper_method :twitter
-  
-  def twitter
-    @@twitter
-  end
+  def init_clients
+    if current_user.nil?
+      return
+    end
 
-  helper_method :facebook
+    current_user.authentications.each do |auth|
+      if auth.provider == 'twitter'
+        @twitter ||= init_twitter(auth.access_token, auth.access_secret)
+      end
+    end
 
-  def facebook
-    @@facebook
+    current_user.authentications.each do |auth|
+      if auth.provider == 'facebook'
+        @facebook ||= init_facebook(auth.access_token)
+      end
+    end
   end
 end

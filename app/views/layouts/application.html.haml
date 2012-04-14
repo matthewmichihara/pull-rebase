@@ -8,12 +8,12 @@
 
   %body
     %nav
-      - if twitter.nil?
+      - if @twitter.nil?
         = link_to 'Sign in with Twitter', '/auth/twitter'
       - else
         = link_to 'Sign out from Twitter', '/#'
       
-      - if facebook.nil?
+      - if @facebook.nil?
         = link_to 'Sign in with Facebook', '/auth/facebook'
       - else
         = link_to 'Sign out from Facebook', '/#'
