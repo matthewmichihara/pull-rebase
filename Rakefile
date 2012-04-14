@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Merge::Application.load_tasks
+PullRebase::Application.load_tasks

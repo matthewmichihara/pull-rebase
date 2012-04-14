@@ -1,4 +1,4 @@
-Merge::Application.configure do
+PullRebase::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
@@ -66,5 +66,5 @@ Merge::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # Set default url for devise
-  config.action_mailer.default_url_options = { :host => 'simplemerge.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'pull-rebase.herokuapp.com' }
 end

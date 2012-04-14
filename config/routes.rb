@@ -1,4 +1,4 @@
-Merge::Application.routes.draw do
+PullRebase::Application.routes.draw do
   root :to => "home#index"
   devise_for :users
 
