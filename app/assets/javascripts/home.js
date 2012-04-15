@@ -29,13 +29,13 @@ function feedsLoaded(twitterArgs, facebookArgs) {
   $.each(twitter, function(key, value) {
     var item = {};
     item['timestamp'] = Date.parse(value['created_at']);
-    item['content'] = '<li class="tweet"><img src="'
+    item['content'] = '<li class="tweet"><span><img class="avatar" src="'
       + value['user']['profile_image_url']
       + '" /><div id="tweet_text">'
       + value['text']
       + '</div><div class="twitter_screen_name">'
       + value['user']['screen_name']
-      + '</div>';
+      + '</div></span>';
     items.push(item);
   });
 
@@ -43,7 +43,7 @@ function feedsLoaded(twitterArgs, facebookArgs) {
     if (value['type'] == 'status') {
       var item = {};
       item['timestamp'] = Date.parse(value['created_time']);
-      item['content'] = '<li class="fb"><img src="http://graph.facebook.com/' + value['from']['id'] + '/picture" />'
+      item['content'] = '<li class="fb"><img class="avatar" src="http://graph.facebook.com/' + value['from']['id'] + '/picture" />'
         + '<div id="fb_text">'
         + value['message']
         + '</div><div class="fb_name">'
@@ -73,3 +73,14 @@ function refreshFeed() {
     }
   )).done(feedsLoaded);
 }
+
+$(document).ready(function() {
+  // Refresh feed when document is loaded.
+  refreshFeed();
+
+  $("#refresh_button").click(refreshFeed);
+
+  // The 'r' key refreshes the feed.
+  $(document).bind('keydown', 'r', refreshFeed);
+});
+

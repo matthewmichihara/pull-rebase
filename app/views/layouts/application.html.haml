@@ -7,18 +7,19 @@
     = csrf_meta_tags
 
   %body
-    %nav
-      - if @twitter.nil?
-        = link_to 'Sign in with Twitter', '/auth/twitter'
-      - else
-        = link_to 'Sign out from Twitter', '/#'
+    #main
+      %nav
+        - if @twitter.nil?
+          = link_to 'Sign in with Twitter', '/auth/twitter'
+        - else
+          = link_to 'Sign out from Twitter', '/#'
+        
+        - if @facebook.nil?
+          = link_to 'Sign in with Facebook', '/auth/facebook'
+        - else
+          = link_to 'Sign out from Facebook', '/#'
       
-      - if @facebook.nil?
-        = link_to 'Sign in with Facebook', '/auth/facebook'
-      - else
-        = link_to 'Sign out from Facebook', '/#'
-    
-    %p{:class => "notice"}= notice
-    %p{:class => "alert"}= alert
+      %p{:class => "notice"}= notice
+      %p{:class => "alert"}= alert
 
-    = yield
+      = yield

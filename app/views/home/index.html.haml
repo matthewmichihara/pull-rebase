@@ -1,15 +1,5 @@
-:javascript
-  $(document).ready(function() {
-    // Refresh feed when document is loaded.
-    refreshFeed();
-
-    $("#refresh_button").click(refreshFeed);
-
-    // The 'r' key refreshes the feed.
-    $(document).bind('keydown', 'r', refreshFeed);
-  });
-
 %h1 pull-rebase
+
 %button{:id => "refresh_button"} refresh
 
 %ul{:id => "feed"}
