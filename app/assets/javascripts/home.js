@@ -29,13 +29,13 @@ function feedsLoaded(twitterArgs, facebookArgs) {
   $.each(twitter, function(key, value) {
     var item = {};
     item['timestamp'] = Date.parse(value['created_at']);
-    item['content'] = '<li class="tweet"><span><img class="avatar" src="'
-      + value['user']['profile_image_url']
-      + '" /><div id="tweet_text">'
-      + value['text']
-      + '</div><div class="twitter_screen_name">'
-      + value['user']['screen_name']
-      + '</div></span>';
+  
+    item['content'] = $('<li/>', {class : 'tweet'})
+                        .append($('<img/>', {class : 'avatar', src : value['user']['profile_image_url']}))
+                        .append($('<span/>')
+                          .append($('<div/>', {class : 'username', text : value['user']['screen_name']}))
+                          .append($('<div/>', {class : 'text', text : value['text']})));
+
     items.push(item);
   });
 
@@ -43,12 +43,12 @@ function feedsLoaded(twitterArgs, facebookArgs) {
     if (value['type'] == 'status') {
       var item = {};
       item['timestamp'] = Date.parse(value['created_time']);
-      item['content'] = '<li class="fb"><img class="avatar" src="http://graph.facebook.com/' + value['from']['id'] + '/picture" />'
-        + '<div id="fb_text">'
-        + value['message']
-        + '</div><div class="fb_name">'
-        + value['from']['name']
-        + '</div></li>';
+
+      item['content'] = $('<li/>', {class : 'fb'})
+                          .append($('<img/>', {class : 'avatar', src : 'http://graph.facebook.com/' + value['from']['id'] + '/picture'}))
+                          .append($('<div/>', {class : 'username', text : value['from']['name']}))
+                          .append($('<div/>', {class : 'text', text : value['message']}));
+
       items.push(item);
     }
   });

@@ -9,14 +9,21 @@ body {
   background-color: #222222;
 }
 
+li {
+  display: inline;
+}
+
 #main {
   margin: 0 auto;
   width: 800px;
   background-color: #FFFFFF;
 }
 
+img {
+  display: inline;
+}
+
 #feed {
-  list-style: none;
   padding: 0;
 }
 
